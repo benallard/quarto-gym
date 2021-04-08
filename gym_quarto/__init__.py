@@ -10,6 +10,19 @@ register(
     entry_point='gym_quarto.env:QuartoEnvV0',
 )
 
+
+def make_1penv():
+    env = QuartoEnv()
+    #player = A2CPlayer('/home/ben/ML/quarto-gym/1PQuarto-v0.zip', env)
+    player = RandomPlayer(env)
+    env = OnePlayerWrapper(env, player)
+    return env
+
+register(
+    id="1PQuarto-v0",
+    entry_point="gym_quarto:make_1penv",
+)
+
 def make_v1():
     env = QuartoEnv()
     env = MoveEncoding(env)

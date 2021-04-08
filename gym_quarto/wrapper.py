@@ -48,17 +48,3 @@ class OnePlayerWrapper(Wrapper):
         self.other_player.seed(seed)
         return [seed]
 
-def make_env():
-    from .env import QuartoEnv
-    from .player import RandomPlayer, A2CPlayer
-    env = QuartoEnv()
-    #player = A2CPlayer('/home/ben/ML/quarto-gym/1PQuarto-v0.zip', env)
-    player = RandomPlayer()
-    env = OnePlayerWrapper(env, player)
-    return env
-
-register(
-    id="1PQuarto-v0",
-    entry_point="gym_quarto.wrapper:make_env",
-    max_episode_steps=8,
-)
