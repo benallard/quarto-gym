@@ -86,7 +86,8 @@ class QuartoEnv(gym.Env):
     def legal_actions(self):
         for position in self.game.free_spots:
             for piece in self.game.free:
-                if piece == self.piece:
+                if piece == self.piece and len(self.game.free) > 1:
+                    # The last move in case of draw can propose the current piece
                     continue
                 yield position, piece
 
@@ -113,6 +114,38 @@ class QuartoEnv(gym.Env):
 
     def __del__(self):
         self.close()
+
+class MoveEncoderV0(gym.ActionWrapper):
+    """First version of the Move Encoding wrapping
+
+    Action is [pos, next]
+    """
+
+    def __init__(self, env:gym.Env) -> None:
+        super(MoveEncoderV0, self).__init__(env)
+        # action is [pos, next]
+        # both are not null, they are just ignored when irrelevant
+        self.action_space = gym.spaces.MultiDiscrete([16, 16])
+
+    def action(self, action):
+        return self.decode(action)
+
+    @property
+    def legal_actions(self):
+        for action in self.env.legal_actions:
+            yield self.encode(action)
+
+    def decode(self, action):
+        position, piece = action
+        position = (position % 4, position // 4)
+        if piece is not None:
+            piece = QuartoPiece(piece)
+        return position, piece
+
+    def encode(self, action):
+        position, piece = action
+        return position[0] + position[1] * 4, QuartoEnv.pieceNum(piece)
+
 
 class QuartoEnvV0(QuartoEnv):
     """ The encoding that were used by the v0 of the env

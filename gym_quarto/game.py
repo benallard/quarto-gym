@@ -9,6 +9,7 @@ class QuartoGame(object):
         self.free = [QuartoPiece(i) for i in range(16)]
 
     def play(self, piece, position, next_piece) -> bool:
+        assert piece is None or isinstance(piece, QuartoPiece), type(piece)
         # check if piece in self.free
         if piece not in self.free:
             logger.warn(f"Not placing a free piece, {piece}, {''.join(str(p) for p in self.free)}")

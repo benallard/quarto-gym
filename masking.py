@@ -23,6 +23,6 @@ env = OnePlayerWrapper(env, player)
 env = ActionMasker(env, mask_fn)
 
 model = MaskedPPO(MaskedActorCriticPolicy, env, verbose=1)
-model.learn()
+model.learn(1e6)
 
 

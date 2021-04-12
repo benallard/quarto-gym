@@ -1,4 +1,4 @@
-from .env import QuartoEnv, QuartoEnvV0
+from .env import QuartoEnv, QuartoEnvV0, MoveEncoderV0
 from .env1 import MoveEncoding, BoardEncoding
 from .player import RandomPlayer, A2CPlayer, HumanPlayer, random_action
 from .wrapper import OnePlayerWrapper
@@ -25,7 +25,8 @@ register(
 
 def make_v1():
     env = QuartoEnv()
-    env = MoveEncoding(env)
+    #env = MoveEncoding(env)
+    env = MoveEncoderV0(env)
     env = BoardEncoding(env)
     return env
 
