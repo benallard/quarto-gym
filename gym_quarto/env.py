@@ -85,11 +85,14 @@ class QuartoEnv(gym.Env):
     @property
     def legal_actions(self):
         for position in self.game.free_spots:
-            for piece in self.game.free:
-                if piece == self.piece and len(self.game.free) > 1:
-                    # The last move in case of draw can propose the current piece
-                    continue
-                yield position, piece
+            if len(self.game.free) == 1:
+                # The last move in case of draw must propose None
+                yield position, None
+            else:
+                for piece in self.game.free:
+                    if piece == self.piece:
+                        continue
+                    yield position, piece
 
 
     @staticmethod
@@ -144,7 +147,9 @@ class MoveEncoderV0(gym.ActionWrapper):
 
     def encode(self, action):
         position, piece = action
-        return position[0] + position[1] * 4, QuartoEnv.pieceNum(piece)
+        if piece is not None:
+            piece = QuartoEnv.pieceNum(piece)
+        return position[0] + position[1] * 4, piece
 
 
 class QuartoEnvV0(QuartoEnv):
