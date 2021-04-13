@@ -23,7 +23,7 @@ class OnePlayerWrapper(Wrapper):
 
     def step(self, action):
         obs, self_rew, done, info = self.env.step(action)
-        self.render()
+        #self.render()
         if done:
             info['winner'] = 'Agent'
             return obs, self_rew, done, info

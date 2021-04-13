@@ -24,7 +24,7 @@ class QuartoGame(object):
         self.board[y][x] = piece
         # remove from free
         self.free.remove(piece)
-        if not self.game_over and next_piece not in self.free:
+        if not (self.game_over or self.draw) and next_piece not in self.free:
             logger.warn(f"Next piece invalid, {next_piece}, {''.join(str(p) for p in self.free)}")
             return False
         return True
