@@ -138,6 +138,15 @@ class MoveEncoderV0(gym.ActionWrapper):
         for action in self.env.legal_actions:
             yield self.encode(action)
 
+    def action_masks(self):
+        mask = [[False for i in range(16)],
+                [False for i in range(16)]]
+        for position, piece in self.legal_actions:
+            mask[0][position] = True
+            if piece is not None:
+                mask[1][piece] = True
+        return mask
+
     def decode(self, action):
         position, piece = action
         position = (position % 4, position // 4)
