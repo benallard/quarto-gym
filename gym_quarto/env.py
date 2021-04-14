@@ -146,6 +146,7 @@ class MoveEncoderV0(gym.ActionWrapper):
             if piece is not None:
                 mask[1][piece] = True
         return mask
+    action_mask_fn = action_masks
 
     def decode(self, action):
         position, piece = action
